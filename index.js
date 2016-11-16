@@ -27,6 +27,7 @@ var executeApiGet = function(methodName, parameters, callback) {
     .accept('xml')
     .parse(xml2jsParser)
     .end(function(err, res) {
+      console.log(res.body);
       return callback(err, res);
     });
 };
@@ -74,23 +75,28 @@ var convertParametersToQueryStr = function(params) {
   return str;
 };
 
+
+var normalizeObject = function(item) {
+  var result = {};
+
+  Object.keys(item).forEach(function(itemFieldName) {
+    if (typeof item[itemFieldName][0] == "object") {
+      var keys = Object.keys(item[itemFieldName][0]);
+      result[itemFieldName] = normalizeArray(item[itemFieldName][0][keys[0]]);
+    } else {
+      result[itemFieldName] = formatField(itemFieldName, item[itemFieldName][0]);
+    }
+  });
+
+  return result;
+};
+
 /* Utility method to turn the XML array object into a nicer, more standard JSON array */
 var normalizeArray = function(obj) {
   var results = [];
 
   obj.forEach(function(item) {
-    var result = {};
-
-    Object.keys(item).forEach(function(itemFieldName) {
-      if (typeof item[itemFieldName][0] == "object") {
-        var keys = Object.keys(item[itemFieldName][0]);
-        result[itemFieldName] = normalizeArray(item[itemFieldName][0][keys[0]]);
-      } else {
-        result[itemFieldName] = formatField(itemFieldName, item[itemFieldName][0]);
-      }
-    });
-
-    results.push(result);
+    results.push(normalizeObject(item));
   });
 
   return results;
@@ -132,6 +138,26 @@ module.exports = {
       // Normalize the results
       var recipes = normalizeArray(res.body.RecipeSummariesResponse.RecipeSummaries[0].RecipeSummary);
       return callback(null, recipes);
+    });
+  },
+
+  getById: function(id, callback) {
+    executeApiGet("GetRecipeByRecipeID", {
+      iRecipeID: id,
+      bStripHTML: "False",
+      iBrandID: 1,
+      iLangID: 1
+    }, function(err, res) {
+      if (err) {
+        return callback(err);
+      }
+
+      if (!res.body || !res.body.RecipeDetailResponse) {
+        return callback("Couldn't find any results");
+      }
+
+
+      return callback(null, normalizeObject(res.body.RecipeDetailResponse.RecipeDetail[0]));
     });
   }
 };

@@ -12,3 +12,10 @@ recipes.search("mango chicken", function(err, results) {
   console.log(results);
 });
 ```
+
+## Get Recipe by ID
+```javascript
+recipes.getById(138284, function(err, result) {
+  console.log(result);
+});
+```
