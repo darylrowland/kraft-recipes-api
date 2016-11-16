@@ -19,3 +19,11 @@ recipes.getById(138284, function(err, result) {
   console.log(result);
 });
 ```
+
+## Search by Ingredients
+Search by up to 3 Ingredients
+```javascript
+recipes.searchByIngredients("beef", "chilli", "cheese", function(err, results) {
+  console.log(result);
+}
+```

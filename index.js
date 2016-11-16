@@ -27,7 +27,6 @@ var executeApiGet = function(methodName, parameters, callback) {
     .accept('xml')
     .parse(xml2jsParser)
     .end(function(err, res) {
-      console.log(res.body);
       return callback(err, res);
     });
 };
@@ -141,6 +140,51 @@ module.exports = {
     });
   },
 
+  searchByIngredients: function(ingredient1, ingredient2, ingredient3, callback) {
+    var ingredients =  ["","",""];
+
+    if (ingredient1) {
+      ingredients[0] = ingredient1;
+    }
+
+    if (ingredient2) {
+      ingredients[1] = ingredient2;
+    }
+
+    if (ingredient3) {
+      ingredients[2] = ingredient3;
+    }
+
+    executeApiGet("GetRecipesByIngredients", {
+      iLangID: 1,
+      iBrandID: 1,
+      sSortField: "",
+      sSortDirection: "",
+      bIsRecipePhotoRequired: "True",
+      iStartRow: 1,
+      iEndRow: 10,
+      sIngredient1: ingredients[0],
+      sIngredient2: ingredients[1],
+      sIngredient3: ingredients[2],
+    }, function(err, res) {
+      if (err) {
+        return callback(err);
+      }
+
+      if (!res.body || !res.body.RecipeSummariesResponse || !res.body.RecipeSummariesResponse.RecipeSummaries || res.body.RecipeSummariesResponse.RecipeSummaries.length == 0) {
+        return callback("Couldn't find any results");
+      }
+
+      if (res.body.RecipeSummariesResponse.TotalCount && res.body.RecipeSummariesResponse.TotalCount[0] == '0') {
+        return callback(null, []);
+      }
+
+      // Normalize the results
+      var recipes = normalizeArray(res.body.RecipeSummariesResponse.RecipeSummaries[0].RecipeSummary);
+      return callback(null, recipes);
+    });
+  },
+
   getById: function(id, callback) {
     executeApiGet("GetRecipeByRecipeID", {
       iRecipeID: id,
@@ -155,7 +199,6 @@ module.exports = {
       if (!res.body || !res.body.RecipeDetailResponse) {
         return callback("Couldn't find any results");
       }
-
 
       return callback(null, normalizeObject(res.body.RecipeDetailResponse.RecipeDetail[0]));
     });
