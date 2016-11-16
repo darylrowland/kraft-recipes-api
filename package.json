@@ -1,0 +1,19 @@
+{
+  "name": "kraft-recipe-api",
+  "version": "0.1.0",
+  "description": "NodeJS API for hitting the Kraft Foods recipe API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kraftfoods",
+    "recipes"
+  ],
+  "dependencies": {
+    "superagent": "*",
+    "superagent-xml2jsparser": "*"
+  },
+  "author": "Daryl Rowland",
+  "license": "ISC"
+}
