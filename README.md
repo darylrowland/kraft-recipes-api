@@ -21,9 +21,9 @@ recipes.getById(138284, function(err, result) {
 ```
 
 ## Search by Ingredients
-Search by up to 3 Ingredients
+Search by up to 3 Ingredients (include nulls as parameters if you don't want all of them)
 ```javascript
 recipes.searchByIngredients("beef", "chilli", "cheese", function(err, results) {
   console.log(result);
-}
+});
 ```
