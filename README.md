@@ -1,5 +1,6 @@
 # Kraft Recipes API for NodeJS
-This is a work in progress library to wrap the Kraft Recipes API defined here: http://www.kraftfoods.com/ws/RecipeWS.asmx.
+This is a work in progress library to wrap the Kraft Recipes API defined here: http://www.kraftfoods.com/ws/RecipeWS.asmx. The API is defined in SOAP so the aim of this library is to simplify the calls and return back better JSON formatted results than you'd get directly from the XML.
+You don't need any API keys to get going with this, you can just call the API straightaway.
 
 ## To use
 ```javascript
