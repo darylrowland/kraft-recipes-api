@@ -10,6 +10,7 @@
     "kraftfoods",
     "recipes"
   ],
+  "repository": "https://github.com/darylrowland/kraft-recipes-api",
   "dependencies": {
     "superagent": "*",
     "superagent-xml2jsparser": "*"

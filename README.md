@@ -2,4 +2,13 @@
 This is a work in progress library to wrap the Kraft Recipes API defined here: http://www.kraftfoods.com/ws/RecipeWS.asmx.
 
 ## To use
-`var recipes = require("kraft-recipe-api")`
+```javascript
+var recipes = require("kraft-recipe-api")
+```
+
+## Searching for recipes
+```javascript
+recipes.search("mango chicken", function(err, results) {
+  console.log(results);
+});
+```
