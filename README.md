@@ -31,3 +31,10 @@ recipes.searchByIngredients("beef", "chilli", "cheese", function(err, results) {
   console.log(result);
 });
 ```
+
+## Get a list of all available categories for recipes
+```javascript
+recipes.getCategories(function(err, results) {
+  console.log(result);
+});
+```
