@@ -1,6 +1,6 @@
 {
   "name": "kraft-recipe-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "NodeJS API for hitting the Kraft Foods recipe API",
   "main": "index.js",
   "scripts": {

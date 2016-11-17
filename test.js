@@ -21,3 +21,12 @@ var testSearchByIngredients = function() {
     console.log(res);
   });
 };
+
+var testGetCategories = function() {
+  recipes.getCategories(function(err, res) {
+    console.log(err);
+    console.log(res);
+  })
+};
+
+testGetCategories();

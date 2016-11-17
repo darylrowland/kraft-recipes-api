@@ -7,6 +7,9 @@ const INTEGER = "integer";
 const STRING = "string";
 const BOOLEAN = "boolean";
 const DOUBLE = "double";
+const BRAND_ID = 1;
+const LANG_ID = 1;
+const SITE_ID = 1;
 
 const FIELD_FORMATS = {
   RecipeType: INTEGER,
@@ -17,8 +20,16 @@ const FIELD_FORMATS = {
   NumberOfIngredients: DOUBLE,
   AvgRating: DOUBLE,
   NumberOfRatings: INTEGER,
-  IsHealthy: BOOLEAN
-}
+  IsHealthy: BOOLEAN,
+  IngredientID: INTEGER,
+  QuantityNum: DOUBLE,
+  NutritionItemID: INTEGER,
+  Quantity: DOUBLE,
+  DisplayOrder: INTEGER,
+  CategoryID: INTEGER,
+  SubCategoryID: INTEGER,
+  CategoryRank: INTEGER
+};
 
 /* Utility method to perform get requests against the API */
 var executeApiGet = function(methodName, parameters, callback) {
@@ -156,8 +167,8 @@ module.exports = {
     }
 
     executeApiGet("GetRecipesByIngredients", {
-      iLangID: 1,
-      iBrandID: 1,
+      iLangID: LANG_ID,
+      iBrandID: BRAND_ID,
       sSortField: "",
       sSortDirection: "",
       bIsRecipePhotoRequired: "True",
@@ -189,8 +200,8 @@ module.exports = {
     executeApiGet("GetRecipeByRecipeID", {
       iRecipeID: id,
       bStripHTML: "False",
-      iBrandID: 1,
-      iLangID: 1
+      iBrandID: BRAND_ID,
+      iLangID: LANG_ID
     }, function(err, res) {
       if (err) {
         return callback(err);
@@ -202,5 +213,19 @@ module.exports = {
 
       return callback(null, normalizeObject(res.body.RecipeDetailResponse.RecipeDetail[0]));
     });
+  },
+
+  getCategories(callback) {
+    executeApiGet("GetRecipeCategories", {
+      iBrandID: BRAND_ID,
+      iLangID: LANG_ID
+    }, function(err, res) {
+      if (err || !res.body || !res.body.GetRecipeCategoryResponse) {
+        return callback("Could not get categories");
+      }
+
+      return callback(null, normalizeArray(res.body.GetRecipeCategoryResponse.RecipeCategories[0].RecipeCategory));
+
+    })
   }
 };
