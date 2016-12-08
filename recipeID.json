@@ -1,0 +1,38 @@
+{
+  "Meat": {
+    "ID": 756,
+    "SubCategories": {
+      "Beef": 2563,
+      "Chicken": 2562,
+      "Fish": 2561,
+      "Lamb": 2565,
+      "Pastry": 2566,
+      "Pork": 2564,
+      "Seafood": 2560,
+      "Other": 2567
+    }
+  },
+  "Vegetarian": {
+    "ID": 757,
+    "SubCategories": {
+      "Starters": 2571,
+      "Soups": 2568,
+      "Mains": 2570,
+      "Entree": 2569
+    }
+  },
+  "Type": {
+    "ID": 11,
+    "SubCategories" : {
+      "Starters": 96,
+      "Beverages": 104,
+      "Breads": 101,
+      "Desserts": 103,
+      "Mains": 97,
+      "Salads": 98,
+      "Sandwiches": 80,
+      "Sides": 99,
+      "Soups": 100
+    }
+  }
+}

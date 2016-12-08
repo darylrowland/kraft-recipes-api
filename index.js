@@ -1,5 +1,6 @@
 var request = require("superagent");
 var xml2jsParser = require('superagent-xml2jsparser');
+var recipeIDs = require('./recipeID.json')
 
 const API_ROOT = "http://www.kraftfoods.com/ws/recipews.asmx/";
 const SCOPES = "GWS-KF07-Recipes";
@@ -81,7 +82,6 @@ var convertParametersToQueryStr = function(params) {
 
     str += key + "=" + params[key];
   });
-
   return str;
 };
 
@@ -215,6 +215,54 @@ module.exports = {
     });
   },
 
+  getByCategoryName: function(Category, SubCategory, callback) {
+    var iCatID = recipeIDs[Category]["ID"];
+    var iSubCatID = recipeIDs[Category]["SubCategories"][SubCategory];
+    return this.getByCategoryId(iCatID, iSubCatID, callback);
+  },
+
+  getByCategoryId: function(iCatID, iSubCatID, callback) {
+    executeApiGet("GetRecipesByCategory", {
+      iCatID: iCatID,
+      iSubCatID: iSubCatID,
+      sSortField: "",
+      sSortDirection: "",
+      bIsRecipePhotoRequired: "True",
+      bIsReadyIn30Mins: 'False',
+      bOnlyHealthyRecipes: 'False',
+      iBrandID: BRAND_ID,
+      iLangID: LANG_ID,
+      iStartRow: 1,
+      iEndRow: 10,
+      bIncludeExtraInformation: "True"
+    }, function(err, res) {
+      if (err) {
+        return callback(err);
+      }
+      if (!res.body || !res.body.RecipeSummariesResponse || !res.body.RecipeSummariesResponse.RecipeSummaries || res.body.RecipeSummariesResponse.RecipeSummaries.length == 0) {
+        return callback("Couldn't find any results");
+      }
+
+      if (res.body.RecipeSummariesResponse.TotalCount && res.body.RecipeSummariesResponse.TotalCount[0] == '0') {
+       return callback(null, []);
+     }
+
+      return callback(null, normalizeArray(res.body.RecipeSummariesResponse.RecipeSummaries[0].RecipeSummary));
+    });
+  },
+
+  getTopTenRecipes(callback) {
+    executeApiGet("GetTopTenRecipes", {
+      iBrandID: BRAND_ID,
+      iLangID: LANG_ID
+    }, function(err, res) {
+    if (err || !res.body || !res.body.RecipeSummariesResponse || !res.body.RecipeSummariesResponse.RecipeSummaries || res.body.RecipeSummariesResponse.RecipeSummaries.length == 0) {
+      return callback("Could not get Recipes");
+    }
+    return callback(null, normalizeArray(res.body.RecipeSummariesResponse.RecipeSummaries[0].RecipeSummary));
+    })
+  },
+
   getCategories(callback) {
     executeApiGet("GetRecipeCategories", {
       iBrandID: BRAND_ID,
@@ -223,9 +271,7 @@ module.exports = {
       if (err || !res.body || !res.body.GetRecipeCategoryResponse) {
         return callback("Could not get categories");
       }
-
       return callback(null, normalizeArray(res.body.GetRecipeCategoryResponse.RecipeCategories[0].RecipeCategory));
-
     })
   }
 };

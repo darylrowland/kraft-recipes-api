@@ -29,4 +29,26 @@ var testGetCategories = function() {
   })
 };
 
-testGetCategories();
+var testGetByCategoryName = function() {
+  recipes.getByCategoryName("Type", "Mains", function(err, res) {
+    console.log(err);
+    console.log(res);
+  })
+};
+
+var testGetByCategoryId = function() {
+  recipes.getByCategoryId(11, 97, function(err, res) {
+    console.log(err);
+    console.log(res);
+  })
+};
+
+var testTopTenRecipes = function() {
+  recipes.getTopTenRecipes(function(err, res) {
+    console.log(err);
+    console.log(res);
+  })
+};
+
+
+testTopTenRecipes();
