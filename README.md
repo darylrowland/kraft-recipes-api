@@ -38,3 +38,25 @@ recipes.getCategories(function(err, results) {
   console.log(result);
 });
 ```
+
+## Get recipes by Category ID and SubCategory ID
+A list of the main categories is saved in `recipeID.json`.
+```javascript
+recipes.getByCategoryId(11, 97, function(err, res) {
+  console.log(result);
+});
+```
+
+## Get recipes by Category Name and SubCategory Name
+```javascript
+recipes.getByCategoryName("Type", "Mains", function(err, res) {
+  console.log(result);
+});
+```
+
+## Get top ten recipes
+```javascript
+recipes.getTopTenRecipes(function(err, res) {
+  console.log(result);
+});
+```
